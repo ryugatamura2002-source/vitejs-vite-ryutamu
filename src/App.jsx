@@ -50,9 +50,11 @@ export default function App() {
       const data = await response.json();
       const aiResponse = data.candidates[0].content.parts[0].text;
       setResult(aiResponse);
-    } catch (e) {
-      setResult("星の瞬きが強すぎて今は占えないりゅたむ...時間を置いてまた話しかけてね！");
-    }
+  } catch (e) {
+    // 具体的なエラー内容を画面に出しちゃうりゅたむ！
+    setResult("エラーが出ちゃったりゅたむ： " + e.message);
+    console.error(e);
+  }
     setLoading(false);
   };
 
