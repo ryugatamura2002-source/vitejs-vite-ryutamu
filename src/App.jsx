@@ -7,9 +7,8 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState('');
 
-  const ryutamuImage =
-    'http://googleusercontent.com/image_generation_content/0'; // 先ほどの画像URL
-
+  const ryutamuImage = "/ryutamu.png";
+  
   const fortune = async () => {
     if (!apiKey) return alert('APIキーを入れてりゅたむ！');
     if (!name) return alert('名前を教えてりゅたむ！');
