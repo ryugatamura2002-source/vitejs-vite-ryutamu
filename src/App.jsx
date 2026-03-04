@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // アイコン（𝕏シェア用）
 const XIcon = () => (
@@ -11,15 +11,24 @@ export default function App() {
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // ⚠️ 【重要】ここにあなたのGoogle AI Studioで取得したAPIキーを貼り付けてください
+  // ⚠️ 【重要】APIキーを設定済み
   const MY_API_KEY = 'AIzaSyBzSX7t49Z7mppzisMbu4MrfNcQ8RftJII'; 
 
-  // キャラクター画像（GitHubのpublicフォルダにryutamu.pngを置いている前提）
+  // キャラクター画像
   const ryutamuImage = "/ryutamu.png"; 
 
+  // フォントを読み込むための設定
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }, []);
+
   const fortune = async () => {
-    if (!MY_API_KEY || MY_API_KEY === 'AIzaSyBzSX7t49Z7mppzisMbu4MrfNcQ8RftJII') {
-      return alert('PMより指示：APIキーを設定してりゅたむ！');
+    // 修正ポイント：チェック条件を「空かどうか」だけにしました
+    if (!MY_API_KEY || MY_API_KEY === 'ここにAPIキーを貼る') {
+      return alert('PMより指示：APIキーが正しく設定されていないりゅたむ！');
     }
     if (!name) return alert('お名前を教えてりゅたむ！');
     
@@ -57,7 +66,6 @@ export default function App() {
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #fce7f3 0%, #e0e7ff 100%)', padding: '20px', fontFamily: '"M PLUS Rounded 1c", sans-serif', color: '#1e293b' }}>
       <div style={{ maxWidth: '480px', margin: '0 auto', backgroundColor: 'rgba(255, 255, 255, 0.95)', borderRadius: '32px', padding: '30px', boxShadow: '0 20px 40px rgba(0,0,0,0.05)', textAlign: 'center' }}>
         
-        {/* りゅたむ画像（比率維持・圧縮なし） */}
         <img 
           src={ryutamuImage} 
           alt="星屑の精霊 りゅたむ" 
@@ -73,7 +81,7 @@ export default function App() {
             <label style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#475569', marginLeft: '5px' }}>おなまえ</label>
             <input 
               type="text" placeholder="例：りゅたむ" 
-              style={{ width: '100%', padding: '14px', borderRadius: '16px', border: '2px solid #e2e8f0', fontSize: '16px', boxSizing: 'border-box', outline: 'none', transition: 'border-color 0.2s' }}
+              style={{ width: '100%', padding: '14px', borderRadius: '16px', border: '2px solid #e2e8f0', fontSize: '16px', boxSizing: 'border-box', outline: 'none' }}
               value={name} onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -81,7 +89,7 @@ export default function App() {
           <div>
             <label style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#475569', marginLeft: '5px' }}>占いたいこと</label>
             <select 
-              style={{ width: '100%', padding: '14px', borderRadius: '16px', border: '2px solid #e2e8f0', backgroundColor: 'white', fontSize: '16px', boxSizing: 'border-box', outline: 'none' }}
+              style={{ width: '100%', padding: '14px', borderRadius: '16px', border: '2px solid #e2e8f0', backgroundColor: 'white', fontSize: '16px', boxSizing: 'border-box' }}
               value={target} onChange={(e) => setTarget(e.target.value)}
             >
               <option>恋愛</option><option>お仕事・学校</option><option>金運</option><option>対人関係</option>
@@ -90,16 +98,14 @@ export default function App() {
 
           <button 
             onClick={fortune} disabled={loading}
-            style={{ marginTop: '10px', padding: '20px', backgroundColor: '#6366f1', color: 'white', border: 'none', borderRadius: '20px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1.2rem', boxShadow: '0 8px 20px rgba(99, 102, 241, 0.4)', transition: 'transform 0.1s' }}
-            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
-            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            style={{ marginTop: '10px', padding: '20px', backgroundColor: '#6366f1', color: 'white', border: 'none', borderRadius: '20px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1.2rem', boxShadow: '0 8px 20px rgba(99, 102, 241, 0.4)' }}
           >
             {loading ? '星に聞いてりゅたむ...' : '占うりゅたむ！'}
           </button>
         </div>
 
         {result && (
-          <div style={{ marginTop: '30px', padding: '24px', backgroundColor: '#fff', borderRadius: '20px', border: '3px solid #e0e7ff', textAlign: 'left', animation: 'fadeIn 0.5s ease-out' }}>
+          <div style={{ marginTop: '30px', padding: '24px', backgroundColor: '#fff', borderRadius: '20px', border: '3px solid #e0e7ff', textAlign: 'left' }}>
             <div style={{ whiteSpace: 'pre-wrap', fontSize: '1rem', color: '#1e293b', lineHeight: '1.7' }}>{result}</div>
             <button 
               onClick={shareX}
@@ -113,10 +119,6 @@ export default function App() {
       
       <div style={{ textAlign: 'center', marginTop: '30px', color: '#94a3b8', fontSize: '0.85rem' }}>
         <p>produced by りゅ ＆ たむ</p>
-        <p style={{ marginTop: '12px', padding: '10px', backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: '10px', display: 'inline-block' }}>
-          <b>[PR]</b> 運気が上がる魔法のアイテムは 
-          <a href="#" style={{ color: '#6366f1', fontWeight: 'bold', textDecoration: 'none', marginLeft: '5px' }}>こちらりゅたむ★</a>
-        </p>
       </div>
     </div>
   );
